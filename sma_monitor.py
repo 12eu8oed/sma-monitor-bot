@@ -3,10 +3,22 @@ import pandas as pd
 import time
 import requests
 import os
-import fcntl
 import sys
+import io
 from dotenv import load_dotenv
 from datetime import datetime
+
+# ==========================================
+# 운영체제 맞춤 설정 (교차 플랫폼 지원)
+# ==========================================
+IS_WINDOWS = sys.platform == 'win32'
+
+if IS_WINDOWS:
+    import msvcrt
+    # 윈도우 인코딩 문제 해결 (이모지 출력 지원)
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+else:
+    import fcntl
 
 # ==========================================
 # 1. 환경 설정 및 세팅
@@ -55,6 +67,7 @@ def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     payload = {'chat_id': CHAT_ID, 'text': message, 'parse_mode': 'Markdown'}
     try:
+        # 이모지 포함 메시지 처리 시 윈도우/리눅스 공통으로 requests는 내부적으로 utf-8 처리함
         response = requests.post(url, json=payload, timeout=10)
         res_json = response.json()
         if not res_json.get('ok'):
@@ -139,7 +152,7 @@ def get_updates():
                             send_telegram_message("🚫 타겟 알람이 해제되었습니다.")
                         else:
                             send_telegram_message("❓ 지원하지 않는 옵션입니다.")
-
+ 
                     elif raw_cmd == 'now':
                         send_report(is_manual=True)
                     
@@ -155,7 +168,7 @@ def get_updates():
                               f"• 지정 타겟 알람: `{alert_status}`\n" \
                               "• 체크 주기: `약 10초마다 실시간 감시`"
                         send_telegram_message(msg)
-
+ 
                     elif raw_cmd in ['help', '/start']:
                         timeframes_str = ", ".join(SUPPORTED_TIMEFRAME)
                         align_list = "\n".join([f"  {k}: {v}" for k, v in ALIGNMENT_MAP.items()])
@@ -276,12 +289,15 @@ def check_target_alerts():
 def check_single_instance():
     """하나의 인스턴스만 실행되도록 보장 (파일 잠금 활용)"""
     try:
-        # 파일이 없으면 생성, 있으면 열기
         f = open(LOCK_FILE, "w")
-        # 파일에 배타적 잠금(LOCK_EX)을 시도. 이미 잠겨있으면 에러 발생(LOCK_NB)
-        fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if IS_WINDOWS:
+            # Windows: msvcrt.locking
+            msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            # Unix/macOS: fcntl.lockf
+            fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
         return f
-    except IOError:
+    except (IOError, OSError):
         print("\n❌ [오류] 이미 프로그램이 실행 중입니다. 중복 실행을 차단합니다.")
         return None
 

@@ -51,5 +51,16 @@ python sma_monitor.py
 ### 🕒 Timeframes
 Type any supported timeframe to change: `1m`, `3m`, `5m`, `15m`, `30m`, `1h`, `2h`, `4h`, `6h`, `8h`, `12h`, `1d`.
 
+## 🔄 Recent Updates (Cross-Platform Support)
+
+### 1. Windows Compatibility
+- **File Locking**: Replaced Unix-only `fcntl` with `msvcrt.locking` to prevent duplicate instances on Windows.
+- **Console Encoding**: Forced UTF-8 encoding for standard output to support emoji displays in Windows terminals.
+
+### 2. Multi-OS Support
+- Refactored core logic to automatically detect the operating system (Windows/macOS/Linux) and apply the correct system-level functions (e.g., file locking) without code modification.
+
+---
+
 ## 📄 License
 MIT License
