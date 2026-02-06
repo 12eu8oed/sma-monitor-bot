@@ -1,66 +1,66 @@
-# 🤖 SMA Monitor Bot
+# 🤖 SMA 모니터 봇
 
-A real-time SMA (Simple Moving Average) crossover monitoring bot for Binance Future markets with Telegram interactive commands.
+바이낸스 선물 시장을 위한 실시간 SMA (단순 이동 평균) 골든/데드크로스 모니터링 봇입니다. 텔레그램을 통해 양방향 명령어가 가능합니다.
 
-## 🚀 Features
-- **Real-time Monitoring**: Tracks SMA periods (7, 25, 99) for BTC, ETH, XRP, and SOL.
-- **Interactive Commands**: Control everything via Telegram.
-- **Singleton Protection**: Prevents multiple instances from running simultaneously using file locking.
-- **Dynamic Intervals**: Adjust report frequency on the fly.
-- **Standardized Commands**: Reliable English commands with a user-friendly Korean interface.
+## 🚀 주요 기능
+- **실시간 모니터링**: BTC, ETH, XRP, SOL에 대해 SMA 기간(7, 25, 99)을 추적합니다.
+- **대화형 명령어**: 모든 기능을 텔레그램을 통해 제어할 수 있습니다.
+- **중복 실행 방지**: 파일 잠금 기능을 사용하여 여러 인스턴스가 동시에 실행되는 것을 방지합니다.
+- **동적 주기 설정**: 보고 주기를 즉석에서 조정할 수 있습니다.
+- **표준화된 명령어**: 신뢰할 수 있는 영어 명령어와 사용자 친화적인 한국어 인터페이스를 제공합니다.
 
-## 🛠 Setup
+## 🛠 설정 방법
 
-### 1. Prerequisites
-- Python 3.10+
-- A Telegram Bot (created via @BotFather)
+### 1. 사전 요구 사항
+- Python 3.10 이상
+- 텔레그램 봇 ( @BotFather를 통해 생성)
 
-### 2. Installation
+### 2. 설치
 ```bash
-# Install dependencies
+# 필수 라이브러리 설치
 pip install ccxt pandas requests python-dotenv
 ```
 
-### 3. Configuration
-Copy `.env.template` to `.env` and fill in your credentials:
+### 3. 환경 설정
+`.env.template` 파일을 `.env`로 복사하고 인증 정보를 입력하세요:
 ```bash
-TELEGRAM_BOT_TOKEN=your_bot_token_here
-TELEGRAM_CHAT_ID=your_chat_id_here
+TELEGRAM_BOT_TOKEN=여기에_봇_토큰_입력
+TELEGRAM_CHAT_ID=여기에_채팅_ID_입력
 ```
 
-### 4. Running the Bot
+### 4. 봇 실행
 ```bash
 python sma_monitor.py
 ```
 
-## 🤖 Command Guide
+## 🤖 명령어 가이드
 
-### 📊 Report Settings
-- `report on/off`: Enable/disable reports
-- `interval [sec]`: Set report interval (e.g., `interval 60`)
+### 📊 리포트 설정
+- `report on/off`: 리포트 활성화/비활성화
+- `interval [초]`: 리포트 간격 설정 (예: `interval 60`)
 
-### 🎯 Target Alerts
-- `alert [number]`: Set specific alignment alert (1-6)
-- `alert off`: Disable target alerts
+### 🎯 타겟 알림
+- `alert [번호]`: 특정 배열 알림 설정 (1-6)
+- `alert off`: 타겟 알림 비활성화
 
-### ⚙️ Other Commands
-- `status`: Check current settings
-- `now`: Send immediate report
-- `help`: Show this guide
+### ⚙️ 기타 명령어
+- `status`: 현재 설정 확인
+- `now`: 즉시 상황 보고서 전송
+- `help`: 이 가이드 표시
 
-### 🕒 Timeframes
-Type any supported timeframe to change: `1m`, `3m`, `5m`, `15m`, `30m`, `1h`, `2h`, `4h`, `6h`, `8h`, `12h`, `1d`.
+### 🕒 타임프레임
+지원되는 타임프레임을 입력하여 변경: `1m`, `3m`, `5m`, `15m`, `30m`, `1h`, `2h`, `4h`, `6h`, `8h`, `12h`, `1d`.
 
-## 🔄 Recent Updates (Cross-Platform Support)
+## 🔄 최근 업데이트 (교차 플랫폼 지원)
 
-### 1. Windows Compatibility
-- **File Locking**: Replaced Unix-only `fcntl` with `msvcrt.locking` to prevent duplicate instances on Windows.
-- **Console Encoding**: Forced UTF-8 encoding for standard output to support emoji displays in Windows terminals.
+### 1. 윈도우 호환성
+- **파일 잠금**: 윈도우에서 중복 실행을 방지하기 위해 Unix 전용 `fcntl` 대신 `msvcrt.locking`을 사용하도록 수정되었습니다.
+- **콘솔 인코딩**: 윈도우 터미널에서 이모지가 정상적으로 표시되도록 표준 출력을 UTF-8 인코딩으로 강제 설정했습니다.
 
-### 2. Multi-OS Support
-- Refactored core logic to automatically detect the operating system (Windows/macOS/Linux) and apply the correct system-level functions (e.g., file locking) without code modification.
+### 2. 멀티 OS 지원
+- 운영체제(Windows/macOS/Linux)를 자동으로 감지하여 코드 수정 없이도 각 OS에 맞는 시스템 레벨 함수(예: 파일 잠금)를 적용하도록 리팩토링되었습니다.
 
 ---
 
-## 📄 License
+## 📄 라이선스
 MIT License
