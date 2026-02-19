@@ -352,7 +352,7 @@ def monitor():
     lock_f = check_single_instance()
     if lock_f is None:
         sys.exit(1)
-    global last_report_time
+    global last_report_time, next_alert_time
     start_msg = f"🔔 *모니터링 시스템 가동*\n대상: {', '.join(SYMBOLS)}\n기본봉: {TIMEFRAME}\n\nType 'help' for commands!"
     print(start_msg)
     send_telegram_message(start_msg)
